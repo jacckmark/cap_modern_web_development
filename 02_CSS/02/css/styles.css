@@ -1,0 +1,45 @@
+/* stylelint-disable color-named */
+/* stylelint-disable unit-disallowed-list */
+body {
+  background-color: #c9d5e2;
+  font-family: "Source Sans Pro", sans-serif;
+  margin: 24px auto;
+}
+
+section {
+  display: grid;
+  gap: 24px;
+  grid-template-columns: repeat(4, 240px);
+  justify-content: center;
+}
+
+div {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+p {
+  margin: 0 0 24px;
+}
+
+h5 {
+  margin: 24px 0;
+}
+
+button {
+  border: 0;
+  padding: 8px 24px;
+}
+
+.card {
+  background-color: #b3d16d;
+  border: solid 2px white;
+  border-radius: 4px;
+  padding: 24px;
+}
+
+.card-purple {
+  background-color: #862843;
+}

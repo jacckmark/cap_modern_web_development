@@ -1,0 +1,30 @@
+{
+  "name": "skowronek-jaskula.github.io",
+  "version": "1.0.0",
+  "description": "",
+  "main": "stylelint.config.js",
+  "dependencies": {
+    "sass": "^1.52.2"
+  },
+  "devDependencies": {
+    "stylelint": "^14.8.5",
+    "stylelint-config-prettier": "^9.0.3",
+    "stylelint-config-sass-guidelines": "^9.0.1",
+    "stylelint-config-standard": "^25.0.0",
+    "stylelint-config-standard-scss": "^4.0.0"
+  },
+  "scripts": {
+    "watch": "sass scss/styles.scss css/styles.css --watch",
+    "stylelint": "stylelint scss/styles.scss --fix"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Skowronek-Jaskula/skowronek-jaskula.github.io.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Skowronek-Jaskula/skowronek-jaskula.github.io/issues"
+  },
+  "homepage": "https://github.com/Skowronek-Jaskula/skowronek-jaskula.github.io#readme"
+}

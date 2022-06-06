@@ -1,0 +1,17 @@
+.hero {
+  align-items: center;
+  background-image: url(../imgs/lines.png);
+  background-position: center;
+  background-size: 600px;
+  display: flex;
+  height: 450px;
+  justify-content: center;
+  width: 100%;
+
+  h1 {
+    background-color: white;
+    color: #2c2c2c;
+    font-size: 80px;
+    padding: 20px 50px;
+  }
+}

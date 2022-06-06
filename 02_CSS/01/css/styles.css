@@ -1,0 +1,40 @@
+/* stylelint-disable unit-disallowed-list */
+body {
+  font-family: "Source Sans Pro", sans-serif;
+  margin: 24px auto;
+  background-color: #c9d5e2;
+  display: grid;
+  place-items: center;
+}
+
+section {
+  display: grid;
+  gap: 24px;
+  grid-template-columns: repeat(4, 240px);
+  justify-content: center;
+}
+
+div {
+  background-color: #b3d16d;
+  padding: 24px;
+  border: 2px white solid;
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+p {
+  margin-bottom: 16px;
+}
+
+h5 {
+  margin: 16px 50px;
+}
+
+button{
+  background-color: white;
+  padding: 10px 6px;
+}
+/* magenta: #862843; */
+/* distances - multiplication of 4px */

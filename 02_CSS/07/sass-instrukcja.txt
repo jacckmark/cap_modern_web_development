@@ -1,0 +1,5 @@
+npm init
+npm i --save-dev sass
+npm i --save-dev stylelint stylelint-config-prettier stylelint-config-sass-guidelines stylelint-config-standard stylelint-config-standard-scss
+
+script: "watch": "sass scss/styles.scss css/styles.css --watch"

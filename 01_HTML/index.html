@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible"
+        content="IE=edge">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<script type="text/javascript">
+  function submitFn() {
+    const form = document.forms['form']
+
+    console.log(form.firstName.value, form.lastName.value)
+  }
+</script>
+<header>
+  <h1>header</h1>
+  <nav>
+    <a href="/">home</a> |
+    <a href="/test">test</a> |
+    <a href="/about">about</a>
+  </nav>
+</header>
+
+<body>
+  <hr>
+  <form name="form">
+    <label for="firstName">first name</label>
+    <input type="text"
+           name="firstName">
+    <label for="lastName">last name</label>
+    <input type="text"
+           name="lastName">
+    <button type="button"
+            onclick="submitFn()">submit</button>
+  </form>
+  <footer>
+    <h3>copyright</h3>
+    <p>However, it does put its name immediately following the copyright notice when it mentions it being a trademark of
+      The Rocket Science Group. This is sufficient to let potential infringers know that the copyright belongs to The
+      Rocket Science Group and MailChimp.</p>
+  </footer>
+</body>
+
+
+</html>
