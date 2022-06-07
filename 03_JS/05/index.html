@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <script src="toggleButton.js"></script>
+  <link rel="stylesheet"
+        href="index.css">
+</head>
+
+<body>
+  <toggle-button checked />
+</body>
+
+<script>
+  const button = document.querySelector('toggle-button')
+  button.addEventListener('toggleButtonChanged', (e) => {
+    console.log('Button state: ' + e.target.value)
+  })
+</script>
+
+</html>
