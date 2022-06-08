@@ -1,8 +1,12 @@
-import { render, screen } from "@testing-library/react";
+import { createRoot } from "react-dom/client";
 import App from "./App";
 
-test("renders title", () => {
-  render(<App />);
-  const titleElement = screen.getByText(/Hello World!/i);
-  expect(titleElement).toBeInTheDocument();
+it("renders without crashing", () => {
+  // given
+  const div = document.createElement("div");
+  const root = createRoot(div!);
+  // when
+  root.render(<App />);
+  // then no errors thrown
+  root.unmount();
 });

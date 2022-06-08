@@ -1,22 +1,14 @@
-import { Component } from "react";
-import { Typography } from "@mui/material";
+import { Container } from "@mui/material";
+import { BookDetails } from "./book/components/BookDetails/BookDetails";
+import { Header } from "./shared/components/Header/Header";
 
-interface State {
-  title: string;
-}
-
-interface Props {}
-
-class App extends Component<Props, State> {
-  state = { title: "Hello World!" };
-
-  render() {
-    return (
-      <Typography variant="h1" color="primary">
-        {this.state.title}
-      </Typography>
-    );
-  }
-}
+const App = () => (
+  <>
+    <Header />
+    <Container>
+      <BookDetails />
+    </Container>
+  </>
+);
 
 export default App;
