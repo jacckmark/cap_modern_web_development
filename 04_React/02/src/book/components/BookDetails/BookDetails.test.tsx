@@ -1,72 +1,31 @@
+import { createRoot } from "react-dom/client";
 import { BookDetails } from "./BookDetails";
-import { render, screen, waitFor } from "@testing-library/react";
-import { BookContext } from "../../services/BooksService";
-import { Book } from "../../book";
-
-const mockedResponseBooks: Book[] = [
-  {
-    id: 1,
-    authors: "Julius Verne",
-    title: "80 days around the world",
-  },
-  {
-    id: 2,
-    authors: "Frank Herbert",
-    title: "Dune",
-  },
-];
-
-const useBooksMock = () => {
-  return {
-    findAll: async () => {
-      return await mockedResponseBooks;
-    },
-    findOne: async () => {
-      return await mockedResponseBooks[1];
-    },
-    save: async () => {
-      return await mockedResponseBooks[1];
-    },
-    saveNew: async () => {
-      return await mockedResponseBooks[1];
-    },
-  };
-};
-
-const WrapperComponent = ({ children }: any) => (
-  <BookContext.Provider value={useBooksMock()}>{children}</BookContext.Provider>
-);
+import { act, render, screen } from "@testing-library/react";
 
 describe("BookDetails", () => {
-  it("renders authors with a label", async () => {
-    // given
-    expect.hasAssertions();
-    const currentBook = mockedResponseBooks[1];
-    const callbackMock = jest.fn();
-    render(<BookDetails book={currentBook} onBookChange={callbackMock} />, {
-      wrapper: WrapperComponent,
+  const currentBook = {
+    id: 1,
+    title: "Example Book",
+    authors: "John Example",
+  };
+  it("renders without crashing", () => {
+    const div = document.createElement("div");
+    const root = createRoot(div!);
+    act(() => {
+      root.render(<BookDetails book={currentBook} onBookChange={jest.fn()} />);
+      root.unmount();
     });
-    // when
-    const authorsInput = (await screen.findByLabelText(
-      /Authors/i,
-    )) as HTMLInputElement;
-    // then
-    await waitFor(() => expect(authorsInput.value).toBe(currentBook.authors));
   });
 
-  it("renders a title with a label", async () => {
-    // given
-    expect.hasAssertions();
-    const currentBook = mockedResponseBooks[1];
-    const callbackMock = jest.fn();
-    render(<BookDetails book={currentBook} onBookChange={callbackMock} />, {
-      wrapper: WrapperComponent,
-    });
-    // when
-    const titleInput = (await screen.findByLabelText(
-      /Title/i,
-    )) as HTMLInputElement;
-    // then
-    await waitFor(() => expect(titleInput.value).toBe(currentBook.title));
+  it("renders authors with label", () => {
+    render(<BookDetails book={currentBook} onBookChange={jest.fn()} />);
+    const authorInput = screen.getByLabelText(/Authors/i) as HTMLInputElement;
+    expect(authorInput.value).toBe(currentBook.authors);
+  });
+
+  it("renders a title with a label", () => {
+    render(<BookDetails book={currentBook} onBookChange={jest.fn()} />);
+    const titleInput = screen.getByLabelText(/Title/i) as HTMLInputElement;
+    expect(titleInput.value).toBe(currentBook.title);
   });
 });

@@ -1,41 +1,34 @@
-import { useState, ChangeEvent, SyntheticEvent, useEffect } from "react";
+import { useState, ChangeEvent } from "react";
+import { Button, Stack, Card, CardContent, TextField } from "@mui/material";
+import SendIcon from "@mui/icons-material/Send";
 import { Book } from "../../book";
-import { Stack, Button, Card, CardContent, TextField } from "@mui/material";
-import { useBookService } from "../../services/BooksService";
+import { SyntheticEvent } from "react";
+import { useEffect } from "react";
 
 export interface Props {
   book: Book;
-  onBookChange: (book: Book) => void;
+  onBookChange: (bookToUpdate: Book) => void;
 }
 
 export const BookDetails = (props: Props) => {
-  const [book, setBook] = useState<Book>({
-    authors: "",
-    title: "",
-  } as Book);
-  const { findOne, save } = useBookService();
+  const [book, setBook] = useState<Book>({ ...props.book });
+
+  useEffect(() => {
+    setBook(props.book);
+  }, [props.book]);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { value, name } = e.currentTarget;
-    setBook((prevBook) => ({ ...prevBook, [name]: value }));
+    const { name, value } = e.target;
+    setBook((prevBook) => ({
+      ...prevBook,
+      [name]: value,
+    }));
   };
 
   const notifyOnBookChange = (e: SyntheticEvent) => {
     e.preventDefault();
-    save(book).then((savedBook) => {
-      props.onBookChange(savedBook);
-    });
+    props.onBookChange(book);
   };
-
-  useEffect(() => {
-    const id = props.book.id;
-    if (id) {
-      findOne(id).then((book) => {
-        setBook(book);
-      });
-    }
-    // eslint-disable-next-line
-  }, []);
 
   return (
     <Card>
@@ -46,8 +39,6 @@ export const BookDetails = (props: Props) => {
               id="authors"
               name="authors"
               label="Authors"
-              variant="outlined"
-              fullWidth
               value={book.authors}
               onChange={handleChange}
             />
@@ -55,12 +46,15 @@ export const BookDetails = (props: Props) => {
               id="title"
               name="title"
               label="Title"
-              variant="outlined"
-              fullWidth
               value={book.title}
               onChange={handleChange}
             />
-            <Button variant="contained" type="submit" name="apply">
+            <Button
+              variant="contained"
+              color="warning"
+              type="submit"
+              endIcon={<SendIcon />}
+            >
               Apply
             </Button>
           </Stack>

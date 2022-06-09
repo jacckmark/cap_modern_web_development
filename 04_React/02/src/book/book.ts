@@ -3,5 +3,3 @@ export interface Book {
   title: string;
   authors: string;
 }
-
-export type BookProperties = Pick<Book, "authors" | "title">;

@@ -9,13 +9,13 @@
     "@mui/material": "^5",
     "@testing-library/jest-dom": "^5",
     "@testing-library/react": "^13",
+    "@testing-library/react-hooks": "^8",
     "@testing-library/user-event": "^12",
     "@types/jest": "^26.0.15",
     "@types/node": "^12.0.0",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "@types/react-router-dom": "^5",
-    "msw": "^0.41.0",
     "react": "^18",
     "react-dom": "^18",
     "react-router-dom": "^6",
@@ -25,7 +25,6 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "server": "npx json-server --port=8000 --watch db.json",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
@@ -36,6 +35,7 @@
       "react-app/jest"
     ],
     "rules": {
+      "testing-library/no-unnecessary-act": "off",
       "testing-library/no-node-access": "off"
     }
   },

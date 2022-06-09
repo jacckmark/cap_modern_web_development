@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Book } from "../../book";
 import { BookDetails } from "../BookDetails/BookDetails";
-import { useBookService } from "../../services/BooksService";
 import {
   Grid,
   TableContainer,
@@ -16,17 +15,28 @@ import {
 export interface Props {}
 
 export const BookOverview = () => {
-  const { findAll } = useBookService();
   const [books, setBooks] = useState<Book[]>([]);
   const [selectedBook, setSelectedBook] = useState<Book | null>(null);
 
   useEffect(() => {
-    findAll().then((books: Book[]) => setBooks(books));
-    // eslint-disable-next-line
+    setBooks([
+      {
+        id: 1,
+        authors: "John Example",
+        title: "Example Book",
+      },
+      {
+        id: 2,
+        authors: "Joe Smith",
+        title: "Another Book",
+      },
+    ]);
   }, []);
+
   const selectBook = (book: Book): void => {
     setSelectedBook(book);
   };
+
   const isBookSelected = (book: Book): boolean => book === selectedBook;
 
   const updateBook = (bookToUpdate: Book) => {
@@ -35,7 +45,6 @@ export const BookOverview = () => {
         book.id === bookToUpdate.id ? bookToUpdate : book,
       ),
     );
-    setSelectedBook(bookToUpdate);
   };
 
   return (
@@ -58,7 +67,7 @@ export const BookOverview = () => {
                   onClick={() => selectBook(book)}
                   selected={isBookSelected(book)}
                 >
-                  <TableCell component={"th"} scope="row">
+                  <TableCell component="th" scope="row">
                     {index + 1}
                   </TableCell>
                   <TableCell>{book.authors}</TableCell>
@@ -71,11 +80,7 @@ export const BookOverview = () => {
       </Grid>
       <Grid item md={4}>
         {selectedBook && (
-          <BookDetails
-            key={selectedBook.id}
-            book={selectedBook}
-            onBookChange={updateBook}
-          />
+          <BookDetails book={selectedBook} onBookChange={updateBook} />
         )}
       </Grid>
     </Grid>
