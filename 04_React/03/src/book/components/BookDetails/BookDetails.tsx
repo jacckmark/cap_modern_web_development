@@ -4,18 +4,27 @@ import SendIcon from "@mui/icons-material/Send";
 import { Book } from "../../book";
 import { SyntheticEvent } from "react";
 import { useEffect } from "react";
+import { useBookService } from "../../services/BookService";
 
 export interface Props {
   book: Book;
   onBookChange: (bookToUpdate: Book) => void;
 }
 
-export const BookDetails = (props: Props) => {
-  const [book, setBook] = useState<Book>({ ...props.book });
+export const BookDetails: React.FC<Props> = ({
+  book: currentBook,
+  onBookChange,
+}) => {
+  const [book, setBook] = useState<Book>({
+    title: "",
+    authors: "",
+  } as Book);
+  const { find, update } = useBookService();
 
   useEffect(() => {
-    setBook(props.book);
-  }, [props.book]);
+    find(currentBook.id).then((response) => setBook(response));
+    // eslint-disable-next-line
+  }, [currentBook]);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -27,7 +36,7 @@ export const BookDetails = (props: Props) => {
 
   const notifyOnBookChange = (e: SyntheticEvent) => {
     e.preventDefault();
-    props.onBookChange(book);
+    update(book).then((response) => onBookChange(response));
   };
 
   return (

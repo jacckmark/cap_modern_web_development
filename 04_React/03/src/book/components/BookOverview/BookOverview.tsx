@@ -11,26 +11,18 @@ import {
   TableBody,
   Paper,
 } from "@mui/material";
+import { useBookService } from "../../services/BookService";
 
 export interface Props {}
 
 export const BookOverview = () => {
   const [books, setBooks] = useState<Book[]>([]);
   const [selectedBook, setSelectedBook] = useState<Book | null>(null);
+  const { findAll } = useBookService();
 
   useEffect(() => {
-    setBooks([
-      {
-        id: 1,
-        authors: "John Example",
-        title: "Example Book",
-      },
-      {
-        id: 2,
-        authors: "Joe Smith",
-        title: "Another Book",
-      },
-    ]);
+    findAll().then((response) => setBooks(response));
+    // eslint-disable-next-line
   }, []);
 
   const selectBook = (book: Book): void => {
