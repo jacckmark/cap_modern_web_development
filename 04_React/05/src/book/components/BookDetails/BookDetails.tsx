@@ -5,26 +5,23 @@ import { Book } from "../../book";
 import { SyntheticEvent } from "react";
 import { useEffect } from "react";
 import { useBookService } from "../../services/BookService";
+import { useNavigate, useParams } from "react-router-dom";
 
-export interface Props {
-  book: Book;
-  onBookChange: (bookToUpdate: Book) => void;
-}
+const initBook = { id: NaN, title: "", authors: "" };
 
-export const BookDetails: React.FC<Props> = ({
-  book: currentBook,
-  onBookChange,
-}) => {
-  const [book, setBook] = useState<Book>({
-    title: "",
-    authors: "",
-  } as Book);
+export const BookDetails: React.FC = () => {
+  const [book, setBook] = useState<Book>(initBook as Book);
   const { find, update } = useBookService();
+  const { id } = useParams();
+
+  const navigate = useNavigate();
 
   useEffect(() => {
-    find(currentBook.id).then((response) => setBook(response));
+    if (id) {
+      find(+id).then((response) => setBook(response));
+    }
     // eslint-disable-next-line
-  }, [currentBook]);
+  }, []);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -34,9 +31,11 @@ export const BookDetails: React.FC<Props> = ({
     }));
   };
 
+  const navigateToBookList = () => navigate("/book-app/books");
+
   const notifyOnBookChange = (e: SyntheticEvent) => {
     e.preventDefault();
-    update(book).then((response) => onBookChange(response));
+    update(book).then(navigateToBookList);
   };
 
   return (

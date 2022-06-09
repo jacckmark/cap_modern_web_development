@@ -1,10 +1,10 @@
 import { createRoot } from "react-dom/client";
-import { render, screen, fireEvent, act } from "@testing-library/react";
+import { render, screen, act } from "@testing-library/react";
 import { BookOverview } from "./BookOverview";
 import { BookContext, getURI, useBook } from "../../services/BookService";
 import { Book } from "../../book";
 import userEvent from "@testing-library/user-event";
-import { waitFor } from "@testing-library/react";
+import { MemoryRouter, Routes, Route } from "react-router-dom";
 
 const mockedResponseBooks: Book[] = [
   {
@@ -27,22 +27,11 @@ interface HttpRequestConfig {
   body: any;
 }
 
-const useBooksMock = () => {
-  return {
-    findAll: async () => {
-      return await mockedResponseBooks;
-    },
-    find: async () => {
-      return await mockedResponseBooks[1];
-    },
-    update: async (book: Book) => {
-      return await book;
-    },
-    create: async () => {
-      return await mockedResponseBooks[1];
-    },
-  };
-};
+const mockUseNavigate = jest.fn();
+jest.mock("react-router-dom", () => ({
+  ...(jest.requireActual("react-router-dom") as any),
+  useNavigate: () => mockUseNavigate,
+}));
 
 const mockFetch = async function mockFetch(
   url: string,
@@ -74,7 +63,14 @@ const mockFetch = async function mockFetch(
 };
 
 const WrapperComponent = ({ children }: any) => (
-  <BookContext.Provider value={useBook()}>{children}</BookContext.Provider>
+  <BookContext.Provider value={useBook()}>
+    <MemoryRouter>
+      <Routes>
+        <Route path="/" element={children} />
+        <Route path="/book-app/book/1" element={children} />
+      </Routes>
+    </MemoryRouter>
+  </BookContext.Provider>
 );
 
 describe("Book Overview Component", () => {
@@ -111,43 +107,37 @@ describe("Book Overview Component", () => {
     expect(authorsColumn).toBeInTheDocument();
     expect(titleColumn).toBeInTheDocument();
   });
+
   it("renders the master table rows", async () => {
     // given
     render(<BookOverview />, { wrapper: WrapperComponent });
     // when
-    const johnExamleRow = await screen.findByText(/Julius Verne/i);
-    const joeSmithRow = await screen.findByText(/Frank Herbert/i);
+    const juliusExampleRow = await screen.findByText(/Julius Verne/i);
+    const frankSmithRow = await screen.findByText(/Frank Herbert/i);
     // then
-    expect(johnExamleRow).toBeInTheDocument();
-    expect(joeSmithRow).toBeInTheDocument();
+    expect(juliusExampleRow).toBeInTheDocument();
+    expect(frankSmithRow).toBeInTheDocument();
   });
-  it("renders details upon click on the row", async () => {
+
+  it("renders books table with data received from server", async () => {
+    // given
+    expect.hasAssertions();
+
+    render(<BookOverview />, { wrapper: WrapperComponent });
+    expect(await screen.findByText(/Julius Verne/i)).toBeInTheDocument();
+    expect(await screen.findByText(/Frank Herbert/i)).toBeInTheDocument();
+  });
+
+  it("change path after row click", async () => {
     // given
     render(<BookOverview />, { wrapper: WrapperComponent });
     // when
-    const row = await screen.findByText(/Julius Verne/i);
-    const htmlRow = row.closest("tr");
-    htmlRow && fireEvent.click(htmlRow);
-    // then
-    const authorsInput = await screen.findByLabelText(/Authors/i);
-    expect(authorsInput).toBeInTheDocument();
-  });
-
-  it("updates a book row upon changes done in the details", async () => {
-    // given
-    render(<BookOverview />, { wrapper: WrapperComponent });
-    // when
-
-    const row = (await screen.findByText(/Julius Verne/i)).closest("tr");
+    const authorCell = await screen.findByText(/Julius Verne/i);
+    const row = authorCell.closest("tr");
     row && userEvent.click(row);
-    const newAuthor = "New Author";
-
-    const authors = await screen.findByDisplayValue(/Julius Verne/i);
-    userEvent.clear(authors);
-    userEvent.type(authors, newAuthor);
-    const formSubmitBtn = screen.getByRole("button", { name: "Apply" });
-    formSubmitBtn && formSubmitBtn.click();
-    const updatedAuthorCell = row?.querySelector("td");
-    await waitFor(() => expect(updatedAuthorCell).toHaveTextContent(newAuthor));
+    //then
+    expect(mockUseNavigate).toHaveBeenCalled();
+    expect(mockUseNavigate).toHaveBeenCalledTimes(1);
+    expect(mockUseNavigate).toHaveBeenCalledWith("/book-app/book/1");
   });
 });

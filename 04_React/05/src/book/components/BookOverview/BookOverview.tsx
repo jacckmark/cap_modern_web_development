@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Book } from "../../book";
-import { BookDetails } from "../BookDetails/BookDetails";
 import {
   Grid,
   TableContainer,
@@ -12,32 +11,20 @@ import {
   Paper,
 } from "@mui/material";
 import { useBookService } from "../../services/BookService";
+import { useNavigate } from "react-router-dom";
 
 export interface Props {}
 
 export const BookOverview = () => {
   const [books, setBooks] = useState<Book[]>([]);
-  const [selectedBook, setSelectedBook] = useState<Book | null>(null);
   const { findAll } = useBookService();
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     findAll().then((response) => setBooks(response));
     // eslint-disable-next-line
   }, []);
-
-  const selectBook = (book: Book): void => {
-    setSelectedBook(book);
-  };
-
-  const isBookSelected = (book: Book): boolean => book === selectedBook;
-
-  const updateBook = (bookToUpdate: Book) => {
-    setBooks((prevBooks) =>
-      prevBooks.map((book) =>
-        book.id === bookToUpdate.id ? bookToUpdate : book,
-      ),
-    );
-  };
 
   return (
     <Grid container spacing={2}>
@@ -56,8 +43,7 @@ export const BookOverview = () => {
                 <TableRow
                   hover
                   key={book.id}
-                  onClick={() => selectBook(book)}
-                  selected={isBookSelected(book)}
+                  onClick={() => navigate(`/book-app/book/${book.id}`)}
                 >
                   <TableCell component="th" scope="row">
                     {index + 1}
@@ -69,11 +55,6 @@ export const BookOverview = () => {
             </TableBody>
           </Table>
         </TableContainer>
-      </Grid>
-      <Grid item md={4}>
-        {selectedBook && (
-          <BookDetails book={selectedBook} onBookChange={updateBook} />
-        )}
       </Grid>
     </Grid>
   );

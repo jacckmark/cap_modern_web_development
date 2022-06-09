@@ -2,7 +2,7 @@ import { BookDetails } from "./BookDetails";
 import { render, screen, waitFor } from "@testing-library/react";
 import { BookContext } from "../../services/BookService";
 import { Book } from "../../book";
-import userEvent from "@testing-library/user-event";
+import { MemoryRouter, Route, Routes } from "react-router-dom";
 
 const mockedResponseBooks: Book[] = [
   {
@@ -34,8 +34,21 @@ const useBooksMock = () => {
   };
 };
 
+jest.mock("react-router-dom", () => ({
+  ...jest.requireActual("react-router-dom"),
+  useParams: () => ({ id: "1" }),
+}));
+
 const WrapperComponent = ({ children }: any) => (
-  <BookContext.Provider value={useBooksMock()}>{children}</BookContext.Provider>
+  <BookContext.Provider value={useBooksMock()}>
+    <MemoryRouter>
+      <Routes>
+        <Route path="/book-app/books" element={children} />
+        <Route path="/book-app/books/1" element={children} />
+      </Routes>
+      {children}
+    </MemoryRouter>
+  </BookContext.Provider>
 );
 
 describe("BookDetails", () => {
@@ -43,8 +56,7 @@ describe("BookDetails", () => {
     // given
     expect.hasAssertions();
     const currentBook = mockedResponseBooks[1];
-    const callbackMock = jest.fn();
-    render(<BookDetails book={currentBook} onBookChange={callbackMock} />, {
+    render(<BookDetails />, {
       wrapper: WrapperComponent,
     });
     // when
@@ -59,8 +71,7 @@ describe("BookDetails", () => {
     // given
     expect.hasAssertions();
     const currentBook = mockedResponseBooks[1];
-    const callbackMock = jest.fn();
-    render(<BookDetails book={currentBook} onBookChange={callbackMock} />, {
+    render(<BookDetails />, {
       wrapper: WrapperComponent,
     });
     // when
