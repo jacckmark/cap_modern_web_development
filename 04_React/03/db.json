@@ -1,0 +1,64 @@
+{
+  "books": [
+    {
+      "id": 1,
+      "authors": "Joshua Bloch",
+      "title": "Effective Java, 2nd Edition"
+    },
+    {
+      "id": 2,
+      "authors": "Gavin King",
+      "title": "Java Persistence With Hibernate"
+    },
+    {
+      "id": 3,
+      "authors": "Douglas Crockford",
+      "title": "JavaScript: The Good Parts"
+    },
+    {
+      "id": 4,
+      "authors": "Stephen King",
+      "title": "Gunslinger"
+    },
+    {
+      "id": 5,
+      "authors": "Stephen King",
+      "title": "The Witchcraft"
+    },
+    {
+      "id": 6,
+      "authors": "Adam Mickiewicz",
+      "title": "Test Driven Development vol.2"
+    },
+    {
+      "id": 7,
+      "authors": "Rychu Peja",
+      "title": "About the Gravitation"
+    },
+    {
+      "id": 8,
+      "authors": "R.R. Martin",
+      "title": "Game of Thrones vol.9"
+    },
+    {
+      "id": 9,
+      "authors": "Maciej Test",
+      "title": "Testing code in the woods with sticks and stones"
+    },
+    {
+      "id": 10,
+      "authors": "Kent Beck II",
+      "title": "Being a king"
+    },
+    {
+      "id": 11,
+      "authors": "Kent Beck III",
+      "title": "Being a kings son"
+    },
+    {
+      "id": 12,
+      "authors": "Kent Beck IV",
+      "title": "Being a kings grandson"
+    }
+  ]
+}
