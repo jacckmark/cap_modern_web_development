@@ -1,8 +1,11 @@
-import { useState } from "react";
-import { NavLink } from "react-router-dom";
-import { Box, AppBar, Typography, Tabs, Tab } from "@mui/material";
+import React, { useState } from "react";
+import { Box, AppBar, Typography, Tabs, Tab, Button } from "@mui/material";
+import { Link } from "../Link/Link";
+import AcUnitIcon from "@mui/icons-material/AcUnit";
 
-export const Header = () => {
+export const Header: React.FC<{ onToggleTheme: () => void }> = ({
+  onToggleTheme,
+}) => {
   const [currentTab, setCurrentTab] = useState("/book-app/books");
 
   const handleChange = (event: React.SyntheticEvent, newTab: string) => {
@@ -20,27 +23,34 @@ export const Header = () => {
             label="Book Overview"
             value="/book-app/books"
             to="/book-app/books"
-            component={NavLink}
+            component={Link}
           />
           <Tab
             label="New Book"
             value="/book-app/book"
             to="/book-app/book"
-            component={NavLink}
+            component={Link}
           />
           <Tab
             label="User list"
             value="/users/list"
             to="/users/list"
-            component={NavLink}
+            component={Link}
           />
           <Tab
             label="New User"
             value="/users/new"
             to="/users/new"
-            component={NavLink}
+            component={Link}
           />
         </Tabs>
+        <Button
+          onClick={onToggleTheme}
+          endIcon={<AcUnitIcon />}
+          variant="contained"
+        >
+          change theme
+        </Button>
       </AppBar>
     </Box>
   );

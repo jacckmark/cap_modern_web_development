@@ -10,7 +10,7 @@ describe("Header Component", () => {
     // when
     root.render(
       <MemoryRouter>
-        <Header />
+        <Header onToggleTheme={jest.fn()} />
       </MemoryRouter>,
     );
     // then no errors thrown

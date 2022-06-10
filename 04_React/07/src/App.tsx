@@ -9,7 +9,9 @@ import LoaderProvider from "./shared/services/LoaderService";
 import { BookProvider } from "./book/services/BooksService";
 import { UserProvider } from "./user/services/UserService";
 import { Header } from "./shared/components/Header/Header";
-import { Container } from "@mui/material";
+import { Container, CssBaseline, ThemeProvider } from "@mui/material";
+import { darkTheme, lightTheme } from "./shared/styles/theme";
+import { useState } from "react";
 
 export const AppRoutes = () => (
   <Routes>
@@ -22,21 +24,33 @@ export const AppRoutes = () => (
   </Routes>
 );
 
-const App = () => (
-  <BrowserRouter>
-    <QueryClientProvider client={new QueryClient()}>
-      <BookProvider>
-        <UserProvider>
-          <LoaderProvider>
-            <Header />
-            <Container>
-              <AppRoutes />
-            </Container>
-          </LoaderProvider>
-        </UserProvider>
-      </BookProvider>
-    </QueryClientProvider>
-  </BrowserRouter>
-);
+type ThemeType = "dark" | "light";
+
+const App = () => {
+  const [type, setType] = useState<ThemeType>("light");
+
+  const toggleThemeType = () =>
+    setType((prev) => (prev === "light" ? "dark" : "light"));
+
+  return (
+    <BrowserRouter>
+      <QueryClientProvider client={new QueryClient()}>
+        <BookProvider>
+          <UserProvider>
+            <LoaderProvider>
+              <ThemeProvider theme={type === "dark" ? darkTheme : lightTheme}>
+                <CssBaseline />
+                <Header onToggleTheme={toggleThemeType} />
+                <Container>
+                  <AppRoutes />
+                </Container>
+              </ThemeProvider>
+            </LoaderProvider>
+          </UserProvider>
+        </BookProvider>
+      </QueryClientProvider>
+    </BrowserRouter>
+  );
+};
 
 export default App;
